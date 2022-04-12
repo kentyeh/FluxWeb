@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Modify Member</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" th:href="@{/static/purecss/build/pure-min.css}" type="text/css" media="screen"/>
+        <title th:text="${member==null?'會員新增':'修改會員'}">會員資料</title>
+        <style>
+            form.table{
+                display: table;
+                margin: 10px auto;
+            }
+            label{
+                width:auto !important;
+            }
+            .center{
+                text-align:center;
+            }
+        </style>
+        <script th:inline="javascript">
+            function loaded() {
+                
+            }
+        </script>
+    </head>
+    <body onload="loaded()">
+        <form class="pure-form pure-form-aligned table" th:action="@{/modifyMember/}+${member.id}" method="post">
+            <fieldset>
+                <legend class="heading"  th:text="${member==null?'會員新增資料':'修改會員資料'}"></legend>
+                <div class="pure-control-group" th:if="${member==null}">
+                    <label for="account">帳號</label>
+                    <input type="text" id="account" name="id" th:value="${param.id}" placeholder="登錄帳號" required autofocus/>
+                </div>
+                <div class="pure-control-group" th:if="${member!=null}">
+                    <label>帳號</label><input type="hidden" name="id" th:value="${member.id}"/><span style="margin-left:0.5rem">[[${member.id}]]</span>
+                </div>
+                <div class="pure-control-group">
+                    <label for="passwd">姓名</label>
+                    <input type="text" id="name" name="name" th:value="${#strings.isEmpty(param.name)?member.name:param.name}"  required autofocus/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="passwd">密碼</label>
+                    <input type="text" id="passwd" name="passwd" th:value="${#strings.isEmpty(param.passwd)?member.passwd:param.passwd}"/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="birthday">生日</label>
+                    <input type="text" id="birthday" name="birthday" th:value="${#strings.isEmpty(param.passwd)?member.birthday:param.birthday}"/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="enabledY">啟用</label>
+                    <input type="radio" id="enabledY" name="enabled" value="Y" th:checked="${member.enabled eq 'Y'}"/><label for="enabledY">啟用</label>
+                    <input type="radio" id="enabledN" name="enabled" value="N" th:checked="${member.enabled ne 'Y'}"/><label for="enabledN">停用</label>
+                </div>
+                <div class="pure-control-group">
+                    <label for="administartor">管理員</label>
+                    <input type="checkbox" id="administartor" name="roles[0]" value="ROLE_ADMIN" th:checked="${#lists.contains(member.roles,'ROLE_ADMIN')}"/>
+                    <label for="administartor">管理員</label>
+                </div>
+                <div class="pure-control-group">
+                    <label for="websocket">插座</label>
+                    <input type="checkbox" id="websocket" name="roles[1]" value="ROLE_WEBSOCKET" th:checked="${#lists.contains(member.roles,'ROLE_WEBSOCKET')}"/>
+                    <label for="websocket">插座</label>
+                </div>
+                <div class="pure-control-group center">
+                    <button type="reset" class="pure-button pure-button-primary roundButton">重置</button>&emsp;
+                    <button type="submit" class="pure-button pure-button-primary roundButton" th:text="${member==null?'新增':'修改'}"></button>
+                </div>
+            </fieldset>
+        </form>
+    </body>
+</html>

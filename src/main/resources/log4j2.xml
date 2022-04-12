@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="${artifactId}" verbose="false" monitorInterval="30">
+    <Properties>
+        <Property name="log.folder">${project.build.directory}</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level} - %highlight{%msg}%n%ex{full}%n" />
+        </Console>
+        <RollingRandomAccessFile name="${artifactId}-FastRollingFile" fileName="${log.folder}/${artifactId}.log"
+                                 filePattern="${log.folder}/${artifactId}-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level- %msg%n%ex{full}%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="5 MB" />
+            </Policies>
+        </RollingRandomAccessFile>
+        <!--<SMTP name="Mail" subject="WebFlux Error" to="kent@somewhere.com.tw" from="tintin@somewhere.com.tw"
+              smtpHost="127.0.0.1" smtpPort="25">
+        </SMTP>-->
+    </Appenders>
+    <Loggers>
+        <AsyncLogger name="io.r2dbc.h2" level="INFO" additivity="false" includeLocation="false">
+            <AppenderRef ref="console" />
+        </AsyncLogger>
+        <AsyncLogger name="wf" level="DEBUG" additivity="false" includeLocation="false">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="${artifactId}-FastRollingFile" />
+            <!--<AppenderRef ref="Mail" level="fatal"/>-->
+        </AsyncLogger>
+        <AsyncRoot level="info">
+            <AppenderRef ref="console"/>
+        </AsyncRoot>
+    </Loggers>
+</Configuration>

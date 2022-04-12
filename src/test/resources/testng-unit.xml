@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="5" configfailurepolicy="skip" verbose="0" name="${project.artifactId}TestSuit" skipfailedinvocationcounts="false" annotations="JDK"
+   preserve-order="false">
+    <test verbose="1" name="Web Test" junit="false">
+        <classes>
+            <!--
+            -->
+            <class name="wf.spring.TestRootController"/>
+            <class name="wf.spring.TestWS"/>
+            <class name="wf.spring.TestWebSocket"/>
+        </classes>
+    </test>
+</suite> 

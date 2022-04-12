@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec=xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <title>Chat</title>
+        <script   src="/static/jquery/jquery.min.js" ></script>
+        <script th:inline="javascript">
+            let ws;
+            function connect() {
+                let host = document.location.host;
+                let pathname = document.location.pathname;
+                ws = new WebSocket("ws://" + host +  "/chat");
+                ws.onopen = function (event) {
+                    document.getElementById("online").disabled = true;
+                    document.getElementById("offline").disabled = false;
+                    document.getElementById("sendbtn").disabled = false;
+                };
+                ws.onmessage = function (event) {
+                    let log = document.getElementById("log");
+                    console.log(event.data);
+                    log.innerHTML += event.data + "\n";
+                };
+                document.getElementById("offline").onclick = function (event) {
+                    let source = event.target || event.srcElement;
+                    source.disabled = true;
+                    ws.close();
+                    ws = null;
+                    source.onclick = null;
+                };
+                ws.onclose=function(event){
+                    document.getElementById("online").disabled = false;
+                    document.getElementById("offline").disabled = true;
+                    document.getElementById("sendbtn").disabled = true;
+                };
+                ws.onerror=function(event){
+                  console.log(event.error);
+                };
+            }
+            function send() {
+                let content = document.getElementById("msg").value;
+                if (content){
+                    let json = JSON.stringify({"client": content});
+                    ws.send(json);
+                }else
+                    document.getElementById("msg").value = "請輸入訊息後再發送";
+            }
+            function buyAstaff(){
+                $.ajax({
+                    url: /*[[@{/putmyshtoppingcart}]]*/ ,
+                    type: 'POST',
+                    headers: {"X-CSRF-TOKEN": /*[[${_csrf.token}]]*/""},
+                    cache: 'false',
+                    error: function (jqXHR, textStatus,errorThrown) {
+                            alert("連線異常: " + errorThrown + "，請F5重整頁面");
+                    }, success: function (json) {
+                             let log = document.getElementById("log");
+                             console.log(event.data);
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <h2 data-th-text="${user}"></h2>
+        <table>
+            <tr>
+                <td>
+                    <button id="online" type="button" onclick="connect();" >上線</button>
+                    <button id="offline" type="button" disabled>離線</button>
+                    &nbsp;<a href="/logout" style="font-size:1.2rem">登出x</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea readonly rows="10" cols="80" id="log"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" size="51" id="msg" placeholder="訊息"/>
+                    <button type="button" id="sendbtn" onclick="send()" disabled >發訊</button>
+                </td>
+            </tr>
+        </table>
+        <input type="button" id="buyStaff" onclick="buyAstaff()" value="Buy a staff"/>
+    </body>
+</html>

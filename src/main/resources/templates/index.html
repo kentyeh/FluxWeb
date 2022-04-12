@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title>Spring Webflux</title>
+    <script th:inline="javascript">
+        function loaded() {
+          [# th:if="${message != null}"]
+            alert([[${message}]]);
+          [/]
+        }
+    </script>
+  </head>
+  <body onload="loaded()">
+      <h2 data-th-text="#{HelloWorld}"></h2>
+      <h2 data-th-text="${#locale.country}"></h2>
+      <h2 data-th-text="${user}"></h2>
+  </body>
+</html>
