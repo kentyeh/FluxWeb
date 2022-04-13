@@ -22,10 +22,6 @@ import org.springframework.context.annotation.Scope;
 @Import({WebConfig.class, PostgresR2dbConfig.class, H2R2dbConfig.class, SecConfig.class, WsConfig.class})
 public class AppConfig {
 
-    static {
-        reactor.util.Loggers.useSl4jLoggers();
-    }
-
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
     public ObjectMapper objectMapper() {
