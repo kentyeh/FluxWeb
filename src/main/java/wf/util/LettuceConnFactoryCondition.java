@@ -17,7 +17,7 @@ public class LettuceConnFactoryCondition implements Condition {
         String profile = context.getEnvironment().getProperty("spring.profiles.active", "prod");
         Map<String, Object> attributes = metadata.getAnnotationAttributes(Bean.class.getName());
         String beanName = attributes == null ? "" : ((String[]) attributes.get("value"))[0];
-        return profile.equals(beanName);
+        return beanName.startsWith(profile);
     }
 
 }
