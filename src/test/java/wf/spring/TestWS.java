@@ -83,6 +83,7 @@ public class TestWS extends AbstractTestNGSpringContextTests {
                 );
     }
 
+    @Test
     void testWs() throws IOException, InterruptedException {
         reactor.netty.http.client.HttpClient client = reactor.netty.http.client.HttpClient.create();
         AtomicReference<Cookie> session = new AtomicReference();
