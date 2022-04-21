@@ -12,13 +12,13 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.optimize>true</maven.compiler.optimize>
         <spring.version>5.3.19</spring.version>
-        <spring.security.version>5.6.2</spring.security.version>
+        <spring.security.version>5.6.3</spring.security.version>
         <log4j.version>2.17.2</log4j.version>
         <disruptor.version>3.4.4</disruptor.version>
         <surefire.version>3.0.0-M5</surefire.version>
         <r2dbcH2.version>0.9.1.RELEASE</r2dbcH2.version>
-        <jedisMock.version>1.0.1</jedisMock.version>
-        <netty.version>4.1.75.Final</netty.version>
+        <jedisMock.version>1.0.2</jedisMock.version>
+        <netty.version>4.1.76.Final</netty.version>
         <reactor-netty.version>1.0.18</reactor-netty.version>
         <exec.mainClass>wf.Main</exec.mainClass>
     </properties>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
-            <version>2.6.2</version>
+            <version>2.6.3</version>
         </dependency>
         <dependency>
             <groupId>io.projectreactor.netty</groupId>
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-r2dbc</artifactId>
-            <version>1.4.3</version>
+            <version>1.4.4</version>
         </dependency>
         <dependency>
             <groupId>io.r2dbc</groupId>
@@ -122,11 +122,12 @@
             <artifactId>r2dbc-postgresql</artifactId>
             <version>0.8.12.RELEASE</version>
         </dependency>
-        <dependency>
+        <!--如果使用M$ SQL-->
+        <!--<dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-mssql</artifactId>
             <version>0.9.0.RELEASE</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-h2</artifactId>
@@ -241,12 +242,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>4.4.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>
             <artifactId>htmlunit</artifactId>
             <version>2.60.0</version>
@@ -283,6 +278,13 @@
                 <spring.profiles.active>prod</spring.profiles.active>
                 <http.port>80</http.port>
             </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                    <version>42.3.4</version>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
     <build>
@@ -384,23 +386,19 @@
                 <version>2.6.6</version>
                 <executions>
                     <execution>
-                        <id>Start</id>
-                        <phase>pre-integration-test</phase>
+                        <id>package</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>start</goal>
+                            <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <profiles>dev</profiles>
+                            <attach>false</attach>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>stop-jetty</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
                 </executions>
+                <configuration>
+                    <mainClass>${exec.mainClass}</mainClass>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -411,68 +409,6 @@
                         <exclude>*.sql</exclude>
                     </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <artifactSet>
-                                <excludes>
-                                    <exclude>org.apache.logging.log4j:log4j-1.2-api:jar:</exclude>
-                                    <exclude>org.apache.logging.log4j:log4j-jcl:jar:</exclude>
-                                </excludes>
-                            </artifactSet>
-                            <transformers>
-                                <transformer implementation="com.github.edwgiz.maven_shade_plugin.log4j2_cache_transformer.PluginsCacheFileTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>${mainClass}</mainClass>
-                                    <manifestEntries>
-                                        <Multi-Release>false</Multi-Release>
-                                    </manifestEntries>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/spring.handlers</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/spring.schemas</resource>
-                                </transformer>
-                            </transformers>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <!--必須排除相依函式庫的簽章，否則合併檔執行時一會驗證錯誤-->
-                                    <excludes>
-                                        <exclude>**${file.separator}module-info.class</exclude>
-                                        <exclude>META-INF${file.separator}*.SF</exclude>
-                                        <exclude>META-INF${file.separator}*.DSA</exclude>
-                                        <exclude>META-INF${file.separator}*.RSA</exclude>
-                                        <exclude>META-INF${file.separator}DEPENDENCIES</exclude>
-                                        <exclude>**${file.separator}LICENSE</exclude>
-                                        <exclude>**${file.separator}NOTICE</exclude>
-                                        <exclude>**${file.separator}CHANGELOG</exclude>
-                                        <exclude>**${file.separator}*.txt</exclude>
-                                        <exclude>**${file.separator}*.kotlin_module</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <!--<minimizeJar>true</minimizeJar>-->
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.github.edwgiz</groupId>
-                        <artifactId>maven-shade-plugin.log4j2-cachefile-transformer</artifactId>
-                        <version>2.15.0</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>

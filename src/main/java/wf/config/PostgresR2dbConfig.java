@@ -47,7 +47,7 @@ public class PostgresR2dbConfig extends R2dbConfig {
                 .option(PORT, 5432)
                 .option(USER, "postgres")
                 .option(PASSWORD, "qwer1234")
-                .option(DATABASE, "EDB")
+                .option(DATABASE, "WEBFLUX")
                 .option(MAX_SIZE, 20)
                 .build());
         return new ConnectionPool(ConnectionPoolConfiguration.builder(connectionFactory)

@@ -16,6 +16,10 @@ public class Main {
     private static final Logger logger = Loggers4j2.getLogger(Main.class);
 
     public static void main(String[] args) throws IOException {
+        String profile = System.getProperty("spring.profiles.active");
+        if (profile == null || profile.trim().isEmpty()) {
+            System.setProperty("spring.profiles.active", "prod");
+        }
         try (AbstractApplicationContext context = new AnnotationConfigApplicationContext(wf.config.AppConfig.class)) {
             context.registerShutdownHook();
             context.getBean(DisposableServer.class).onDispose().block();

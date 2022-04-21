@@ -13,7 +13,8 @@ import reactor.util.Logger;
 public class Loggers4j2 {
 
     private static Function<String, Logger> LOGGER_FACTORY;
-    private static boolean includeLocation = "dev".endsWith(System.getProperty("spring.profiles.active"));
+    private static boolean includeLocation = System.getProperty("spring.profiles.active") == null
+            ? false : System.getProperty("spring.profiles.active").startsWith("dev");
 
     static {
         resetLoggerFactory();

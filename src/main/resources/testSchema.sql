@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS member(
   username  varchar(16) not null,
   passwd    varchar(20) not null,
   enabled   varchar(1) default 'Y' check(enabled='Y' or enabled='N'), 
-  birthday  date default CURRENT_DATE()
+  birthday  date default CURRENT_DATE
 );
 
 CREATE TABLE IF NOT EXISTS authorities(
