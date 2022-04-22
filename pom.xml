@@ -393,6 +393,16 @@
                         </goals>
                         <configuration>
                             <attach>false</attach>
+                            <excludes>
+                                <exclude>
+                                    <groupId>io.r2dbc</groupId>
+                                    <artifactId>r2dbc-h2</artifactId>
+                                </exclude>
+                                <exclude>
+                                    <groupId>com.github.fppt</groupId>
+                                    <artifactId>jedis-mock</artifactId>
+                                </exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                 </executions>
