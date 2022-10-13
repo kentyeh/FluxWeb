@@ -11,15 +11,15 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.optimize>true</maven.compiler.optimize>
-        <spring.version>5.3.19</spring.version>
-        <spring.security.version>5.6.3</spring.security.version>
-        <log4j.version>2.17.2</log4j.version>
+        <spring.version>5.3.23</spring.version>
+        <spring.security.version>5.7.3</spring.security.version>
+        <log4j.version>2.19.0</log4j.version>
         <disruptor.version>3.4.4</disruptor.version>
         <surefire.version>3.0.0-M5</surefire.version>
-        <r2dbcH2.version>0.9.1.RELEASE</r2dbcH2.version>
-        <jedisMock.version>1.0.2</jedisMock.version>
-        <netty.version>4.1.76.Final</netty.version>
-        <reactor-netty.version>1.0.18</reactor-netty.version>
+        <r2dbcH2.version> 0.9.1.RELEASE</r2dbcH2.version>
+        <jedisMock.version>1.0.4</jedisMock.version>
+        <netty.version>4.1.84.Final</netty.version>
+        <reactor-netty.version>1.0.23</reactor-netty.version>
         <exec.mainClass>wf.Main</exec.mainClass>
     </properties>
     <dependencies>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring5</artifactId>
-            <version>3.0.15.RELEASE</version>
+            <version>3.1.0.RC1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -52,12 +52,12 @@
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-            <version>3.1.0.M1</version>
+            <version>3.1.0.RC1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
-            <version>2.6.3</version>
+            <version>2.7.0</version>
         </dependency>
         <dependency>
             <groupId>io.projectreactor.netty</groupId>
@@ -84,7 +84,7 @@
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>6.1.8.RELEASE</version>
+            <version>6.2.1.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.netty</groupId>
@@ -105,22 +105,22 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-r2dbc</artifactId>
-            <version>1.4.4</version>
+            <version>1.5.3</version>
         </dependency>
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-spi</artifactId>
-            <version>0.9.1.RELEASE</version>
+            <version>1.0.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-pool</artifactId>
-            <version>0.9.0.RELEASE</version>
+            <version> 0.9.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-postgresql</artifactId>
-            <version>0.8.12.RELEASE</version>
+            <version>0.8.13.RELEASE</version>
         </dependency>
         <!--如果使用M$ SQL-->
         <!--<dependency>
@@ -176,7 +176,7 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
-            <version>3.4.17</version>
+            <version>3.4.24</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -197,7 +197,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>3.5.1</version><!--TestNg Rquires  version 3.5.1-->
+            <version>3.6.1</version><!--TestNg Rquires  version 3.5.1-->
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -214,7 +214,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-test-autoconfigure</artifactId>
-            <version>2.6.6</version>
+            <version>2.7.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -232,19 +232,19 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.22.0</version>
+            <version>3.23.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.5</version>
+            <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>
             <artifactId>htmlunit</artifactId>
-            <version>2.60.0</version>
+            <version>2.65.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -282,7 +282,7 @@
                 <dependency>
                     <groupId>org.postgresql</groupId>
                     <artifactId>postgresql</artifactId>
-                    <version>42.3.4</version>
+                    <version>42.5.0</version>
                 </dependency>
             </dependencies>
         </profile>
@@ -317,7 +317,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <configuration>
                     <mainClass>${exec.mainClass}</mainClass>
                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
@@ -393,16 +393,6 @@
                         </goals>
                         <configuration>
                             <attach>false</attach>
-                            <excludes>
-                                <exclude>
-                                    <groupId>io.r2dbc</groupId>
-                                    <artifactId>r2dbc-h2</artifactId>
-                                </exclude>
-                                <exclude>
-                                    <groupId>com.github.fppt</groupId>
-                                    <artifactId>jedis-mock</artifactId>
-                                </exclude>
-                            </excludes>
                         </configuration>
                     </execution>
                 </executions>
